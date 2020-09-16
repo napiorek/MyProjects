@@ -23,4 +23,6 @@ export class ManageComponent {
   remove(symbol) {
     this.symbols = this.service.remove(symbol);
   }
+
+  // add option to refresh the components
 }

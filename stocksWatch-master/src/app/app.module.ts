@@ -23,9 +23,7 @@ import { AppRoutes } from './app.routes';
     FormsModule,
     AppRoutes
   ],
-  providers: [
-    StocksService
-  ],
+  providers: [StocksService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
