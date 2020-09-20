@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-let stocks: Array<string> = ['AAPL', 'GOOG', 'FB', 'AMZN', 'TWTR', 'TSLA', 'HPQ', 'TSLA'];
+let stocks: Array<string> = ['AAPL', 'GOOG', 'FB', 'AMZN', 'TWTR'];
 let service: string = 'https://angular2-in-action-api.herokuapp.com';
 
 export interface StockInterface {
@@ -9,6 +9,11 @@ export interface StockInterface {
   lastTradePriceOnly: number;
   change: number;
   changeInPercent: number;
+}
+
+export interface NewsInterface {
+  url: string;
+  title: string;
 }
 
 @Injectable()
@@ -20,7 +25,6 @@ export class StocksService {
     return stocks;
   }
 
-  // currently only works with symbol, add dictionary to link name of stock companies to symbols
   add(stock) {
     stocks.push(stock);
     return this.get();
@@ -35,7 +39,5 @@ export class StocksService {
     if (symbols) {
       return this.http.get<Array<StockInterface>>(service + '/stocks/snapshot?symbols=' + symbols.join());
     }
-  }
-
-  // add buy/sell stock and link it to the client portfolio
+  } 
 }

@@ -1,19 +1,25 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { ChangePipe } from './change.pipe';
 import { CurrencyPipe, PercentPipe } from '@angular/common';
-import { StockInterface } from '../services/stocks.service';
 
-@Pipe({
-  name: 'change'
-})
-export class ChangePipe implements PipeTransform {
-
-  constructor(private currencyPipe: CurrencyPipe, private percentPipe: PercentPipe) {}
-
-  transform(stock: StockInterface, showPercent: boolean = true): any {
-    let value = `${this.currencyPipe.transform(stock.change, 'USD', 'symbol', '.2')}`;
-    if (showPercent) {
-      value += ` (${this.percentPipe.transform(stock.changeInPercent, '.2')})`;
-    }
-    return value;
-  }
-}
+describe('ChangePipe', () => {
+  const currencyPipe = new CurrencyPipe('en-us');
+  const percentPipe = new PercentPipe('en-us');
+  const pipe = new ChangePipe(currencyPipe, percentPipe);
+  const stock = {
+    symbol: 'abc',
+    lastTradePriceOnly: 100,
+    change: 1,
+    changeInPercent: 0.01
+  };
+  // check if pipe was created successfully
+  it('create an instance', () => {
+    expect(pipe).toBeTruthy();
+  });
+  // check if transform methode works as expected
+  it('should transform a stock value', () => {
+    expect(pipe.transform(stock)).toEqual(`$1.00 (1.00%)`);
+    stock.change = -3.45;
+    stock.changeInPercent = -0.0345;
+    expect(pipe.transform(stock)).toEqual(`-$3.45 (-3.45%)`);
+  });
+});
